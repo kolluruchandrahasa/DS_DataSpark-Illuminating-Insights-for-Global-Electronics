@@ -1,0 +1,54 @@
+Top 10 Products by Sales Volume
+SELECT ProductName, SUM(Quantity) AS Total_Quantity
+FROM sales_data
+GROUP BY ProductName
+ORDER BY Total_Quantity DESC
+LIMIT 10;
+
+Monthly Sales Trends
+
+SELECT DATE_FORMAT(Order_Date, '%Y-%m') AS Month, SUM(Unit_Price_USD * Quantity) AS Monthly_Sales
+FROM sales_data
+GROUP BY Month
+ORDER BY Month;
+
+Customer Demographics
+
+SELECT Gender, COUNT(*) AS Number_of_Customers
+FROM customers
+GROUP BY Gender;
+
+Sales by Region
+
+SELECT State, SUM(Unit_Price_USD * Quantity) AS Total_Sales
+FROM sales_data
+JOIN stores ON sales_data.StoreKey = stores.StoreKey
+GROUP BY State;
+
+Average Order Value
+
+SELECT AVG(Unit_Price_USD * Quantity) AS Average_Order_Value
+FROM sales_data;
+Products with Zero Sales
+
+SELECT ProductName
+FROM products
+WHERE ProductKey NOT IN (SELECT DISTINCT ProductKey FROM sales_data);
+
+Sales by Currency
+
+SELECT Currency_Code, SUM(Unit_Price_USD * Quantity) AS Total_Sales
+FROM sales_data
+GROUP BY Currency_Code;
+
+Customers with No Purchases
+
+SELECT *
+FROM customers
+WHERE CustomerKey NOT IN (SELECT DISTINCT CustomerKey FROM sales_data);
+
+Sales Performance by Store
+
+SELECT StoreKey, SUM(Unit_Price_USD * Quantity) AS Total_Sales
+FROM sales_data
+GROUP BY StoreKey;
